@@ -24,11 +24,11 @@ public class TestMotorServo extends BasisTeleOp {
     public void initialisieren() {
         super.initialisieren();
         try {
-            motor1 = hardwareMap.get(DcMotor.class, "motor1");
-            motor2 = hardwareMap.get(DcMotor.class, "motor2");
-            servo1 = hardwareMap.get(Servo.class, "servo1");
-            servo2 = hardwareMap.get(Servo.class, "servo2");
-            crservo1 = hardwareMap.get(CRServo.class, "crservo");
+            motor1 = hardwareMap.get(DcMotor.class, "front_left_motor");
+            motor2 = hardwareMap.get(DcMotor.class, "front_right_motor");
+            servo1 = hardwareMap.get(Servo.class, "servo_1");
+            servo2 = hardwareMap.get(Servo.class, "servo_2");
+            crservo1 = hardwareMap.get(CRServo.class, "cr_servo_1");
         } catch (Exception ignored) {
         }
 
