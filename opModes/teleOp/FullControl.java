@@ -61,7 +61,34 @@ public class FullControl extends BasisTeleOp {
 
     @Override
     public void saison() {
-
+        if (istTasteGedrueckt("gamepad1.a", gamepad1.a)) {
+            if (hwMap.motor1.getPower() == 0) {
+                hwMap.motor1.setPower(-0.5);
+            } else {
+                hwMap.motor1.setPower(0.0);
+            }
+        }
+        if (istTasteGedrueckt( "gamepad1.b", gamepad1.b)) {
+            if (hwMap.motor2.getPower() == 0) {
+                hwMap.motor2.setPower(-1);
+            } else {
+                hwMap.motor2.setPower(0.0);
+            }
+        }
+        if (istTasteGedrueckt( "gamepad1.y", gamepad1.y)) {
+            if (hwMap.motor3.getPower() == 0) {
+                hwMap.motor3.setPower(1);
+            } else {
+                hwMap.motor3.setPower(0.0);
+            }
+        }
+        if (istTasteGedrueckt( "gamepad1.x", gamepad1.x)) {
+            if (hwMap.motor4.getPower() == 0) {
+                hwMap.motor4.setPower(-1);
+            } else {
+                hwMap.motor4.setPower(0);
+            }
+        }
     }
 
     @Override

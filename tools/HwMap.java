@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.tools;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.tools.chassis.Chassis;
@@ -14,7 +16,12 @@ public class HwMap {
     public final Navigation navi;
     public final Chassis chassis;
     public final VoltageSensor batterieSpannungsSensor;
+
     /* HIER KÖNNEN VARIABLEN UND HARDWARE TEILE HINZUGEFÜGT WERDEN */
+    public DcMotorEx motor1;
+    public DcMotorEx motor2;
+    public DcMotorEx motor3;
+    public DcMotorEx motor4;
 
     public HwMap(com.qualcomm.robotcore.hardware.HardwareMap hardwareMap) {
         // Typische FTC-Robotergröße: ~45cm x 45cm.
@@ -43,6 +50,10 @@ public class HwMap {
         batterieSpannungsSensor = hardwareMap.voltageSensor.iterator().next();
 
         /* HIER KANN HARDWARE HINZUGEFÜGT WERDEN */
+        motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
+        motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+        motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+        motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
     }
 
     public static class MotorWerte {
