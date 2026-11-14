@@ -14,6 +14,20 @@ import org.firstinspires.ftc.teamcode.tools.datentypen.Position2D;
 import org.firstinspires.ftc.teamcode.tools.datentypen.Rotation;
 
 public abstract class ChassisBasis implements Chassis {
+    // Reihenfolge der Räder überall: 0 = FL, 1 = FR, 2 = BL, 3 = BR
+    // Namen müssen exakt so in der Robot-Konfiguration auf dem Driver Hub stehen
+    public static final String[] RAD_MOTOR_NAMEN = {
+            "front_left_motor", "front_right_motor", "back_left_motor", "back_right_motor"
+    };
+    // Drehrichtungen so wählen, dass positive Geschwindigkeit das Rad VORWÄRTS dreht
+    // (prüfen mit dem OpMode "TestZuordnungMotoren")
+    public static final DcMotorEx.Direction[] RAD_MOTOR_RICHTUNGEN = {
+            DcMotorEx.Direction.REVERSE, // FL
+            DcMotorEx.Direction.FORWARD, // FR
+            DcMotorEx.Direction.FORWARD, // BL
+            DcMotorEx.Direction.REVERSE  // BR
+    };
+
     protected final RevHubOrientationOnRobot hubAusrichtung;
     protected final Position2D gefahreneDistanz;
     protected final double[] radGeschwindigkeiten;
@@ -47,24 +61,15 @@ public abstract class ChassisBasis implements Chassis {
 
     @Override
     public void erstelleMotorArray(HardwareMap hwMap) {
-        radMotoren[0] = hwMap.get(DcMotorEx.class, "front_left_motor");
-        radMotoren[1] = hwMap.get(DcMotorEx.class, "front_right_motor");
-        radMotoren[2] = hwMap.get(DcMotorEx.class, "back_left_motor");
-        radMotoren[3] = hwMap.get(DcMotorEx.class, "back_right_motor");
-
         for (int i = 0; i < this.radMotoren.length; i++) {
+            radMotoren[i] = hwMap.get(DcMotorEx.class, RAD_MOTOR_NAMEN[i]);
             radGeschwindigkeiten[i] = 0.0;
             radMotoren[i].setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             radMotoren[i].setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            radMotoren[i].setDirection(RAD_MOTOR_RICHTUNGEN[i]);
             radMotorSchritte[i] = 0;
             deltaRadMotorSchritte[i] = 0;
         }
-
-        // Motor Richtungen festlegen
-        radMotoren[0].setDirection(DcMotorEx.Direction.REVERSE); // FL
-        radMotoren[1].setDirection(DcMotorEx.Direction.FORWARD); // FR
-        radMotoren[2].setDirection(DcMotorEx.Direction.FORWARD); // BL
-        radMotoren[3].setDirection(DcMotorEx.Direction.REVERSE); // BR
 
         imu = hwMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(this.hubAusrichtung));
