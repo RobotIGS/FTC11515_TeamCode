@@ -14,6 +14,7 @@ public class FullControl extends BasisTeleOp {
     // ---- Zustände ----
     boolean einsammelnAn = false;
     boolean schiessenAn = false;
+    boolean transportAn = false;
     final ElapsedTime schussTimer = new ElapsedTime();
     @Override
     public void initialisieren() {
@@ -53,35 +54,6 @@ public class FullControl extends BasisTeleOp {
     }
     @Override
     public void saison() {
-//        if (istTasteGedrueckt("gp2_a", gamepad2.a)) {
-//            if (hwMap.motor1.getPower() == 0) {
-//                hwMap.motor1.setPower(hwMap.POWER_EINSAMMELN);
-//            } else {
-//                hwMap.motor1.setPower(0);
-//            }
-//        }
-//        if (istTasteGedrueckt("gp2_b", gamepad2.b)) {
-//            if (hwMap.motor2.getPower() == 0) {
-//                hwMap.motor2.setPower(hwMap.POWER_EINSAMMELN);
-//            } else {
-//                hwMap.motor2.setPower(0);
-//            }
-//        }
-//        if (istTasteGedrueckt("gp2_x", gamepad2.x)) {
-//            if (hwMap.motor3.getPower() == 0) {
-//                hwMap.motor3.setPower(hwMap.POWER_TRANSPORT);
-//            } else {
-//                hwMap.motor3.setPower(0);
-//            }
-//        }
-//        if (istTasteGedrueckt("gp2_y", gamepad2.y)) {
-//            if (hwMap.motor4.getPower() == 0) {
-//                hwMap.motor4.setPower(hwMap.POWER_SCHIESSEN);
-//            } else {
-//                hwMap.motor4.setPower(0);
-//            }
-//        }
-
          // Mechanismus 1: Einsammeln (Motor 1 + 2) -> Gamepad 2, Taste A
          if (istTasteGedrueckt("gp2_a", gamepad2.a)) {
             einsammelnAn = !einsammelnAn;
@@ -89,18 +61,21 @@ public class FullControl extends BasisTeleOp {
         double einsammelnPower = einsammelnAn ? hwMap.POWER_EINSAMMELN : 0.0;
         hwMap.motor1.setPower(einsammelnPower);
         hwMap.motor2.setPower(einsammelnPower);
-        // Mechanismus 2: Schießen (Motor 4) + Hochtransport (Motor 3) -> Gamepad 2, Taste B
+
+        // Mechanismus 2: Hochtransport (Motor 3) -> Gamepad 2, Taste B
         if (istTasteGedrueckt("gp2_b", gamepad2.b)) {
-            schiessenAn = !schiessenAn;
-            if (schiessenAn) {
-                schussTimer.reset(); // Anlaufzeit beginnt jetzt
-            }
+            transportAn = !transportAn;
         }
+
+        // Mechanismus 3: Schießen (Motor 4) -> Gamepad 2, Taste Y
+        if (istTasteGedrueckt("gp2_y", gamepad2.y)) {
+            schiessenAn = !schiessenAn;
+        }
+
+        // Motor 3 dreht sofort hoch
+        hwMap.motor3.setPower(transportAn ? hwMap.POWER_TRANSPORT : 0.0);
         // Motor 4 dreht sofort hoch
         hwMap.motor4.setPower(schiessenAn ? hwMap.POWER_SCHIESSEN : 0.0);
-        // Motor 3 startet erst, wenn die Anlaufzeit vorbei ist
-        boolean transportAn = schiessenAn && schussTimer.milliseconds() >= hwMap.SCHUSS_ANLAUFZEIT_MS;
-        hwMap.motor3.setPower(transportAn ? hwMap.POWER_TRANSPORT : 0.0);
 
         if (istTasteGedrueckt("gp2_dpad_down", gamepad2.dpad_down)) {
             hwMap.POWER_SCHIESSEN -= 0.05;
@@ -114,7 +89,7 @@ public class FullControl extends BasisTeleOp {
     public void telemetrie() {
         telemetry.addData("Einsammeln (A)", einsammelnAn ? "AN" : "AUS");
         telemetry.addData("Schießen (B)", (schiessenAn ? "AN" : "AUS") + ": " + (Math.round(hwMap.POWER_SCHIESSEN * 100.0) / 100.0));
-        telemetry.addData("Transport", (schiessenAn && schussTimer.milliseconds() >= hwMap.SCHUSS_ANLAUFZEIT_MS) ? "AN" : "AUS");
+        telemetry.addData("Transport", transportAn ? "AN" : "AUS");
         telemetry.addLine();
         telemetry.addData("Sneak", hwMap.navi.sneak ? "JA" : "NEIN");
         telemetry.addData("Gegensteuern", hwMap.navi.fahreGegensteuern ? "JA" : "NEIN");

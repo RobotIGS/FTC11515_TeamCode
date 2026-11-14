@@ -21,9 +21,8 @@ public class HwMap {
 
 
     public double POWER_EINSAMMELN = 1.0;      // Motor 1 + 2
-    public double POWER_TRANSPORT = 0.8;       // Motor 3
+    public double POWER_TRANSPORT = 1.0;       // Motor 3
     public double POWER_SCHIESSEN = 0.5;       // Motor 4
-    public int SCHUSS_ANLAUFZEIT_MS = 800;       // Motor 4
 
     public HwMap(com.qualcomm.robotcore.hardware.HardwareMap hardwareMap) {
         // vx Vorwärtsgeschwindigkeit (+ => vorwärts | - => rückwärts)
@@ -35,14 +34,15 @@ public class HwMap {
         chassis.setMotorWerte(MotorWerte.M_435_RPM);
         navi = new Navigation(chassis, new Position2D(0.0, 0.0), new PidRegler(0.55, 0.01, 0.0));
         navi.setHalteRotation(false);
-        navi.setGeschwindigkeitNormal(0.4);
-        navi.setGeschwindigkeitSchleichend(0.2);
-        navi.setGeschwindigkeitDrehen(0.5); // zusätzlicher Faktor neben Sneak/ Normal
+        navi.setGeschwindigkeitNormal(0.5);
+        navi.setGeschwindigkeitSchleichend(0.38);
+        navi.setGeschwindigkeitDrehen(0.45); // zusätzlicher Faktor neben Sneak/ Normal
         navi.setGeschwindigkeitAuto(0.75);
         navi.setBeschleunigungsProfil(new BeschleunigungsProfil(30, 1));
         navi.setRotationsGenauigkeit(1.0); // in Grad
         navi.setFahrGenauigkeit(0.5); // in cm
         batterieSpannungsSensor = hardwareMap.voltageSensor.iterator().next();
+
         /* HIER KANN HARDWARE HINZUGEFÜGT WERDEN */
         // Namen müssen exakt so in der Robot-Konfiguration auf dem Driver Hub stehen
         motor1 = hardwareMap.get(DcMotor.class, "motor1");
