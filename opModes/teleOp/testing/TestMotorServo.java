@@ -98,5 +98,6 @@ public class TestMotorServo extends BasisTeleOp {
 
     @Override
     public void beenden() {
+        super.beenden();
     }
 }

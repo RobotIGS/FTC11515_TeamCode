@@ -41,9 +41,9 @@ public class FullControl extends BasisTeleOp {
         if (istTasteGedrueckt("gp1_rb", gamepad1.right_bumper)) {
             hwMap.navi.fahreGegensteuern = !hwMap.navi.fahreGegensteuern;
         }
-        double vx = -gamepad1.left_stick_y * (hwMap.navi.sneak ? hwMap.navi.geschwindigkeitSneak : hwMap.navi.geschwindigkeitNormal);
+        double vx = gamepad1.left_stick_y * (hwMap.navi.sneak ? hwMap.navi.geschwindigkeitSneak : hwMap.navi.geschwindigkeitNormal);
         double vy = (zweiSticks ? gamepad1.right_stick_x : gamepad1.left_stick_x) * (hwMap.navi.sneak ? hwMap.navi.geschwindigkeitSneak : hwMap.navi.geschwindigkeitNormal);
-        double vz = (gamepad1.left_trigger - gamepad1.right_trigger) * hwMap.navi.geschwindigkeitDrehen * (hwMap.navi.sneak ? hwMap.navi.geschwindigkeitSneak : hwMap.navi.geschwindigkeitNormal);
+        double vz = -(gamepad1.left_trigger - gamepad1.right_trigger) * hwMap.navi.geschwindigkeitDrehen * (hwMap.navi.sneak ? hwMap.navi.geschwindigkeitSneak : hwMap.navi.geschwindigkeitNormal);
         hwMap.navi.setGeschwindigkeit(
                 gegensteuernX.calculate(hwMap.navi.fahreGegensteuern, altVx, vx),
                 gegensteuernY.calculate(hwMap.navi.fahreGegensteuern, altVy, vy),

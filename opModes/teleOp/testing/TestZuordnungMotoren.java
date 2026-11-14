@@ -95,7 +95,6 @@ public class TestZuordnungMotoren extends BasisTeleOp {
 
     @Override
     public void beenden() {
-        super.beenden();
         for (DcMotorEx motor : motoren) {
             motor.setPower(0);
         }
