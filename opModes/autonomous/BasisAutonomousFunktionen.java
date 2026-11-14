@@ -5,4 +5,9 @@ public class BasisAutonomousFunktionen extends BasisAutonomous {
         super.runOnce();
     }
     /* HIER KÖNNEN FUNKTIONEN HINZUGEFÜGT WERDEN, DIE IN ALLEN AUTONOMEN VARIANTEN GENUTZT WERDEN SOLLEN */
+    public void schiessen(){
+        hwMap.motor4.setPower(hwMap.POWER_SCHIESSEN);
+        schleifeWarten(hwMap.SCHUSS_ANLAUFZEIT_MS);
+        hwMap.motor3.setPower(hwMap.POWER_TRANSPORT);
+    }
 }

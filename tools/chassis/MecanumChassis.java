@@ -52,8 +52,10 @@ public class MecanumChassis extends ChassisBasis {
         // Normalisierung der Werte [-1.0; 1.0]
         double vm = Math.max(Math.max(Math.abs(radGeschwindigkeiten[0]), Math.abs(radGeschwindigkeiten[1])), Math.max(Math.abs(radGeschwindigkeiten[2]), Math.abs(radGeschwindigkeiten[3])));
 
-        for (int i = 0; i < 4; i++) {
-            radGeschwindigkeiten[i] *= geschwindigkeit.getBetrag() / vm;
+        if (vm > 0) {
+            for (int i = 0; i < 4; i++) {
+                radGeschwindigkeiten[i] *= geschwindigkeit.getBetrag() / vm;
+            }
         }
     }
 
